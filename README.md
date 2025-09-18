@@ -11,21 +11,29 @@
 
 ## 🔭 About
 
-This repository contains a beginner-friendly **E-Commerce Learning Site Demo** for **Tech With Diwana**.  
-It shows how to host a website on **NGINX + Ubuntu EC2** safely with a one-click deploy script.
+This repository contains a professional **E-Commerce Learning Site Demo** for **Tech With Diwana**.  
 
-Features:
-- Simple responsive homepage: **Welcome To Tech With Diwana**
-- Ecommerce-style IT course gallery (static demo)
-- Safe `script.sh` for Ubuntu/EC2 deploy
+It demonstrates how to deploy a **static frontend with an optional Node.js backend** on a single **Linux EC2 instance using NGINX**.  
+
+### Key Features
+- Responsive landing page: **Welcome To Tech With Diwana**
+- E-commerce style course cards with title, description, and price
+- Demo backend (`/api/courses`) serving JSON course list and purchase API
+- One-click deploy script (`script.sh`) to set up everything on Ubuntu/EC2
+- Beginner-friendly: safe defaults, idempotent script, no destructive commands
 
 ---
 
 ## 🏗 Architecture
 
+**System flow:**
+
 ```
-Browser → NGINX → Static files (HTML, CSS, JS)
+Browser → NGINX → (Static frontend: HTML/CSS/JS)
+                     ↘ (Optional backend: Node.js via /api/ proxy)
 ```
+
+![Architecture](architecture.svg)
 
 ---
 
@@ -33,59 +41,88 @@ Browser → NGINX → Static files (HTML, CSS, JS)
 
 **Homepage Hero:**
 
+![First Page](firstpage.png)
+
 > Welcome To Tech With Diwana  
 > Curated IT courses & hands-on projects — learn, build, deploy.
 
-_Cards: DevOps Bootcamp, Fullstack JS, Kubernetes Hands-on, Linux Server Admin._
+_Course Cards Example:_  
+- DevOps Bootcamp — CI/CD, Docker, Kubernetes  
+- Fullstack JS — React + Node.js  
 
 ---
 
-## 🚀 Quick deploy (Ubuntu / EC2) — safe steps
+## 🚀 Deployment Steps (Ubuntu / EC2)
 
-1. Connect to server:
+### Option A — Automated (recommended)
+Upload `script.sh` and run:
+```bash
+chmod +x script.sh
+# with backend
+sudo ./script.sh
+# without backend
+ENABLE_BACKEND=false sudo ./script.sh
+```
+
+### Option B — Manual Steps
+
+1. **Connect to server:**
 ```bash
 ssh -i "your-key.pem" ubuntu@<EC2-PUBLIC-IP>
 ```
 
-2. Install Nginx & Git:
+2. **Install required packages:**
 ```bash
 sudo apt update
-sudo apt install -y nginx git
+sudo apt install -y nginx git curl jq
 ```
 
-3. Clone repo to site root:
+3. **Clone repo to site root:**
 ```bash
 sudo mkdir -p /var/www/techwithdiwana
 sudo git clone https://github.com/techwithdiwana/techwithdiwana-ecom-learning-site.git /var/www/techwithdiwana
 ```
 
-4. Set permissions:
+4. **Set permissions:**
 ```bash
 sudo chown -R www-data:www-data /var/www/techwithdiwana
 sudo find /var/www/techwithdiwana -type d -exec chmod 755 {} \;
 sudo find /var/www/techwithdiwana -type f -exec chmod 644 {} \;
 ```
 
-5. Configure Nginx `/etc/nginx/sites-available/techwithdiwana`:
+5. **Create Nginx site config `/etc/nginx/sites-available/techwithdiwana`:**
 ```nginx
 server {
-  listen 80;
-  server_name <EC2-PUBLIC-IP>;
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name _;
+
   root /var/www/techwithdiwana;
   index index.html;
 
-  location / {
-    try_files $uri $uri/ =404;
+  # API proxy to backend
+  location ^~ /api/ {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   }
 
-  location ~* \.(png|jpg|jpeg|svg|css|js)$ {
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+
+  location ~* \.(?:css|js|jpg|jpeg|png|gif|ico|svg|webp)$ {
     expires 7d;
     add_header Cache-Control "public";
   }
 }
 ```
 
-6. Enable site & reload nginx:
+6. **Enable site & reload nginx:**
 ```bash
 sudo ln -sf /etc/nginx/sites-available/techwithdiwana /etc/nginx/sites-enabled/techwithdiwana
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -93,7 +130,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-7. Open in browser:
+7. **Open in browser:**
 ```
 http://<EC2-PUBLIC-IP>
 ```
@@ -107,18 +144,13 @@ techwithdiwana-ecom-learning-site/
 ├── index.html
 ├── styles.css
 ├── app.js
+├── backend/ (optional Node backend)
 ├── script.sh
 ├── README.md
-└── backend/ (optional Node backend)
+├── LICENSE
+├── architecture.svg
+└── firstpage.png
 ```
-
----
-
-## 🛠 Contribute
-
-1. Fork repo  
-2. Clone locally  
-3. Create branch, commit & PR
 
 ---
 
