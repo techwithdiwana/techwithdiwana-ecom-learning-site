@@ -4,21 +4,20 @@
 [![Last commit](https://img.shields.io/github/last-commit/techwithdiwana/techwithdiwana-ecom-learning-site)](https://github.com/techwithdiwana/techwithdiwana-ecom-learning-site/commits/main)
 [![License: MIT](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
 
-**YouTube:** https://youtube.com/@techwithdiwana  
-**Subscribe:** _Tech With Diwana_
+📺 **YouTube:** [Tech With Diwana](https://youtube.com/@techwithdiwana)  
+🔔 **Subscribe** to support and learn DevOps + IT hands-on projects.
 
 ---
 
 ## 🔭 About
 
 This repository contains a professional **E-Commerce Learning Site Demo** for **Tech With Diwana**.  
+It demonstrates how to deploy a **static frontend with an optional Node.js backend** on a single **Ubuntu EC2 instance using NGINX**.
 
-It demonstrates how to deploy a **static frontend with an optional Node.js backend** on a single **Linux EC2 instance using NGINX**.  
-
-### Key Features
+### ✨ Key Features
 - Responsive landing page: **Welcome To Tech With Diwana**
-- E-commerce style course cards with title, description, and price
-- Demo backend (`/api/courses`) serving JSON course list and purchase API
+- E-commerce style course gallery with title, description, and price
+- Demo backend (`/api/courses`) serving JSON course list + purchase API
 - One-click deploy script (`script.sh`) to set up everything on Ubuntu/EC2
 - Beginner-friendly: safe defaults, idempotent script, no destructive commands
 
@@ -33,17 +32,15 @@ Browser → NGINX → (Static frontend: HTML/CSS/JS)
                      ↘ (Optional backend: Node.js via /api/ proxy)
 ```
 
-![Architecture](architecture.svg)
+![Architecture](architecture.png)
 
 ---
 
 ## 🖥 First Page Preview
 
-**Homepage Hero:**
-
 ![First Page](firstpage.png)
 
-> Welcome To Tech With Diwana  
+> **Welcome To Tech With Diwana**  
 > Curated IT courses & hands-on projects — learn, build, deploy.
 
 _Course Cards Example:_  
@@ -55,6 +52,7 @@ _Course Cards Example:_
 ## 🚀 Deployment Steps (Ubuntu / EC2)
 
 ### Option A — Automated (recommended)
+
 Upload `script.sh` and run:
 ```bash
 chmod +x script.sh
@@ -148,7 +146,7 @@ techwithdiwana-ecom-learning-site/
 ├── script.sh
 ├── README.md
 ├── LICENSE
-├── architecture.svg
+├── architecture.png
 └── firstpage.png
 ```
 
@@ -163,5 +161,5 @@ MIT License — see [LICENSE](LICENSE).
 ## 👨‍🏫 Author & Contact
 
 **Tech With Diwana**  
-- YouTube: https://youtube.com/@techwithdiwana  
-- Email: techwithdiwana@gmail.com
+- YouTube: [Tech With Diwana](https://youtube.com/@techwithdiwana)  
+- Email: your-email@example.com
