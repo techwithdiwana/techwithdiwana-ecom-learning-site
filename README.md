@@ -132,4 +132,4 @@ MIT License — see [LICENSE](LICENSE).
 
 **Tech With Diwana**  
 - YouTube: https://youtube.com/@techwithdiwana  
-- Email: your-email@example.com
+- Email: techwithdiwana@gmail.com
