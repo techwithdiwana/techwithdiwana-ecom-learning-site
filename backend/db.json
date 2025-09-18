@@ -1,0 +1,6 @@
+{
+  "courses": [
+    {"id":"c1","title":"DevOps Bootcamp","description":"CI/CD, Docker, Kubernetes","price":999,"image":"https://via.placeholder.com/400x250?text=DevOps+Course"},
+    {"id":"c2","title":"Fullstack JS","description":"React + Node.js","price":799,"image":"https://via.placeholder.com/400x250?text=Fullstack+JS"}
+  ]
+}
